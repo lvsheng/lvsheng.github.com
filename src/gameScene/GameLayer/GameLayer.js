@@ -7,10 +7,21 @@
     namespace.GameLayer = cc.Layer.extend({
         _POP_MOUSE_INTERVAL_UPDATE_TIME: 5, //每x秒更新一次弹鼠的间隔
         _POP_MOUSE_INTERVAL_LIST: [ //都走完了游戏结束
-            1,
+            1.5,
             .8,
             .6,
-            .5
+            .5,
+            .5,
+            .5,
+            .5,
+            .4,
+            .3,
+            .3,
+            .3,
+            .3,
+            .3,
+            .3,
+            .1
         ],
 
         ctor: function () {
@@ -88,11 +99,11 @@
             var self = this;
             var pos = touch.getLocation();
 
-            self._hammer.hit(pos.x, pos.y);
             var hittingHole = self._getHoleOn(pos.x, pos.y);
+            self._hammer.hit(pos.x, pos.y, hittingHole);
             if (hittingHole) {
                 console.log('mouse hitting');
-                hittingHole.hitPoppedMouse();
+                hittingHole.preHitPoppedMouse();
             }
         },
 
@@ -168,7 +179,6 @@
 
                     var selectedHole = self._holes[holeIndex];
                     if (selectedHole.canPopMouse()) {
-                        console.log('pop mouse on hole ' + holeIndex);
                         selectedHole.popMouse();
                         popSuccessful = true;
                     }

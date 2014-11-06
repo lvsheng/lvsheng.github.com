@@ -35,7 +35,7 @@
             self._mousePullAction = null;
 
             self._uncleAutoPullTime = 3;
-            self._loverAutoPullTime = 3;
+            self._loverAutoPullTime = 2;
 
             self._hidingMouseY = null;
 
@@ -80,13 +80,25 @@
             poppedMouse.runAction(self._mousePopOnAction);
 
             var autoPullTime = (poppedMouse === self._lover ? self._loverAutoPullTime : self._uncleAutoPullTime);
-            self.scheduleOnce(function () { self._pullPoppedMouse(); }, autoPullTime);
+            self.scheduleOnce(self._autoPullPoppedMouseProxy, autoPullTime);
         },
-        hitPoppedMouse: function () {
+        preHitPoppedMouse: function () {
             var self = this;
 
-            namespace.scoreManager.hitOneSuccessful();
-            self._pullPoppedMouse();
+            self._status = self._STATUS.animating; //animating之后不能再放鼠也不能再被打
+            self.unschedule(self._autoPullPoppedMouseProxy);
+        },
+        //由hammer执行完挥锤子动画后调用
+        afterHitPoppedMouse: function () {
+            var self = this;
+            self._poppedMouse.runAction(new cc.Sequence(
+                self._mousePullAction,
+                new cc.CallFunc(function () {
+                    namespace.scoreManager.hitOneSuccessful();
+                    //TODO: 先飘心啊之类的
+                    self._status = self._STATUS.idle;
+                })
+            ));
         },
 
         setUncleAutoPullTime: function (newTime) {
@@ -216,7 +228,11 @@
             self._mousePullAction = new cc.EaseIn(mousePullMoveAction, .8);
         },
 
-        _pullPoppedMouse: function () {
+        _autoPullPoppedMouseProxy: function () {
+            this._autoPullPoppedMouse();
+        },
+
+        _autoPullPoppedMouse: function () {
             var self = this;
             self._status = self._STATUS.animating;
             self._poppedMouse.runAction(new cc.Sequence(self._mousePullAction, new cc.CallFunc(function () {
