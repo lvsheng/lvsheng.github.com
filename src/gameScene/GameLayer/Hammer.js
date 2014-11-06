@@ -30,9 +30,6 @@
                 delayAction,
                 hideAction
             );
-
-            //TODO: for debug
-            window.hammer = self;
         },
         hit: function (hammerHeadX, hammerHeadY) {
             var self = this;
