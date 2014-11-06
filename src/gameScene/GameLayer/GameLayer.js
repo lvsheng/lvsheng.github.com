@@ -78,8 +78,8 @@
         _listenEvent: function () {
             var self = this;
             cc.eventManager.addListener({
-                event: cc.EventListener.TOUCH_ONE_BY_ONE,
-                swallowTouches: true,
+                event: cc.EventListener.TOUCH_ONE_BY_ONE, //这里的ONE_BY_ONE指的是多个手指时
+                swallowTouches: false,
                 onTouchBegan: function (touch) { self._onUserTouch(touch); }
             }, self);
         },
@@ -92,7 +92,7 @@
             var hittingHole = self._getHoleOn(pos.x, pos.y);
             if (hittingHole) {
                 console.log('mouse hitting');
-                hittingHole.hitPopOnMouse();
+                hittingHole.hitPoppedMouse();
             }
         },
 
@@ -102,7 +102,7 @@
 
             for (var i = 0; !resultHole && i < self._holes.length; ++i) {
                 var eachHole = self._holes[i];
-                if (eachHole.judgeHittingPopOnMouse(x, y)) {
+                if (eachHole.judgeHittingPoppedMouse(x, y)) {
                     resultHole = eachHole;
                 }
             }
