@@ -26,22 +26,10 @@
         },
 
         canPopMouse: function () {
-            return this._status === this._STATUS.idle || this._status === this._STATUS.animating;
+            return this._status === this._STATUS.idle;
         },
         hasMouseOn: function () {
             return this._status === this._STATUS.mouseOn;
-        },
-        popMouse: function () {
-            var self = this;
-
-            self._status = self._STATUS.mouseOn;
-        },
-        hitPopOnMouse: function () {
-            var self = this;
-
-            //TODO: 应该先放动画，再放完了加分，动画中改状态，动画完后再改状态
-            namespace.scoreManager.hitOneSuccessful();
-            self._status = self._STATUS.idle;
         },
         judgeHittingPopOnMouse: function (x, y) {
             var self = this;
@@ -57,6 +45,20 @@
             } else {
                 return false;
             }
+        },
+
+        popMouse: function () {
+            var self = this;
+
+            //TODO: 播放动画
+            self._status = self._STATUS.mouseOn;
+        },
+        hitPopOnMouse: function () {
+            var self = this;
+
+            //TODO: 应该先放动画，再放完了加分，动画中改状态，动画完后再改状态
+            namespace.scoreManager.hitOneSuccessful();
+            self._status = self._STATUS.idle;
         }
     });
 })(window.myGame);
