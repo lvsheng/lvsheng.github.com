@@ -36,15 +36,15 @@
         _initView: function () {
             var self = this;
             var HOLE_POSITIONS = [ //TODO: 改为真正对应图中的点
-                cc.p(120, 100),
                 cc.p(120, 200),
-                cc.p(120, 300),
-                cc.p(220, 100),
-                cc.p(220, 200),
-                cc.p(220, 300),
-                cc.p(320, 100),
+                cc.p(120, 400),
+                cc.p(120, 600),
                 cc.p(320, 200),
-                cc.p(320, 300)
+                cc.p(320, 400),
+                cc.p(320, 600),
+                cc.p(620, 200),
+                cc.p(620, 400),
+                cc.p(620, 600)
             ];
 
             for (var i = 0; i < HOLE_POSITIONS.length; ++i) {
