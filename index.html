@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tieba 11</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="full-screen" content="yes"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="360-fullscreen" content="true"/>
+
+    <style>
+        html, body {
+            background-color: #DAECF9;
+            /*background-image: url('res/background.png');*/
+            /*background-position: center;*/
+            /*background-size: cover;*/
+        }
+        #gameCanvas {
+            background: transparent !important;
+        }
+    </style>
+    <script type="text/javascript" src="cocos2d-js-v3.1-lite.js" charset="UTF-8"></script>
+</head>
+<body>
+    <canvas id="gameCanvas" width="320" height="480"></canvas>
+
+    <script src="src/nameSpace.js"></script>
+    <script src="src/resourceFileMap.js"></script>
+    <script src="src/resourceFileList.js"></script>
+    <script src="src/scoreManager.js"></script>
+
+    <script src="src/gameScene/BackgroundLayer.js"></script>
+    <script src="src/gameScene/GameLayer.js"></script>
+    <script src="src/gameScene/GameScene.js"></script>
+
+    <script src="src/runGame.js"></script>
+</body>
+</html>
