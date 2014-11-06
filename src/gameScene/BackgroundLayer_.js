@@ -14,9 +14,9 @@
 
             var windowSize = cc.director.getWinSize();
 
-            var centerPos = cc.p(windowSize.width / 2, windowSize.height / 2);
+            var centerPosition = cc.p(windowSize.width / 2, windowSize.height / 2);
             var backgroundSprite = new cc.Sprite(namespace.resourceFileMap.background_png);
-            backgroundSprite.setPosition(centerPos);
+            backgroundSprite.setPosition(centerPosition.x, centerPosition.y);
             self.addChild(backgroundSprite);
         }
     });
