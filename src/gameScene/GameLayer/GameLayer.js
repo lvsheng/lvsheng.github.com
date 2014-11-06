@@ -74,9 +74,7 @@
             cc.eventManager.addListener({
                 event: cc.EventListener.TOUCH_ONE_BY_ONE,
                 swallowTouches: true,
-                onTouchBegan: function (touch) {
-                    self._onUserTouch(touch);
-                }
+                onTouchBegan: function (touch) { self._onUserTouch(touch); }
             }, self);
         },
 
@@ -85,6 +83,25 @@
             var pos = touch.getLocation();
 
             self._hammer.hit(pos.x, pos.y);
+            var hittingHole = self._getHoleOn(pos.x, pos.y);
+            if (hittingHole) {
+                console.log('mouse hitting');
+                hittingHole.hitPopOnMouse();
+            }
+        },
+
+        _getHoleOn: function (x, y) {
+            var self = this;
+            var resultHole = null;
+
+            for (var i = 0; !resultHole && i < self._holes.length; ++i) {
+                var eachHole = self._holes[i];
+                if (eachHole.judgeHittingPopOnMouse(x, y)) {
+                    resultHole = eachHole;
+                }
+            }
+
+            return resultHole;
         },
 
         /**
@@ -126,17 +143,31 @@
         _popMouse: function () {
             var self = this;
 
-            var popSuccessful = false;
-            while (!popSuccessful) {
-                var holeIndex = Math.round(Math.random() * (self._holes.length - 1));
+            function hasCanPopHole () {
+                var has = false;
+                for (var i = 0; i < self._holes.length; ++i) {
+                    if (self._holes[i].canPopMouse()) {
+                        has = true;
+                    }
+                }
 
-                var selectedHole = self._holes[holeIndex];
-                if (selectedHole.canPopMouse()) {
-                    console.log('pop mouse hole' + holeIndex); //TODO
-                    popSuccessful = true;
+                return has;
+            }
+
+
+            if (hasCanPopHole()) { //防止都冒出过了，用户还没点时进入死循环
+                var popSuccessful = false;
+                while (!popSuccessful) { //通过了hasCanPopHole()，所以最终一定能找到
+                    var holeIndex = Math.round(Math.random() * (self._holes.length - 1));
+
+                    var selectedHole = self._holes[holeIndex];
+                    if (selectedHole.canPopMouse()) {
+                        console.log('pop mouse on hole ' + holeIndex);
+                        selectedHole.popMouse();
+                        popSuccessful = true;
+                    }
                 }
             }
-            //就先不考虑没有冒出来的情况了，九个洞，应该不会出现这种情况
         }
     });
 })(window.myGame);

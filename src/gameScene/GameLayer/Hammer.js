@@ -7,6 +7,9 @@
             var self = this;
             self._super();
 
+            //初始化字段
+            self._hitAction = null;
+
             self.init();
         },
         init: function () {
@@ -16,6 +19,17 @@
             self.setTexture(namespace.resourceFileMap.hammer_png);
 
             self.setVisible(false);
+
+            var rotationBackAction = new cc.RotateTo(.08, 50);
+            var rotationDownAction = new cc.RotateTo(.03, -60);
+            var delayAction = new cc.DelayTime(.02);
+            var hideAction = new cc.Hide();
+            self._hitAction = new cc.Sequence(
+                rotationBackAction,
+                rotationDownAction,
+                delayAction,
+                hideAction
+            );
 
             //TODO: for debug
             window.hammer = self;
@@ -38,16 +52,8 @@
                 y: y
             });
 
-            var rotationBackAction = new cc.RotateTo(.08, 50);
-            var rotationDownAction = new cc.RotateTo(.03, -60);
-            var delayAction = new cc.DelayTime(.02);
-            var hideAction = new cc.Hide();
-            self.runAction(new cc.Sequence(
-                rotationBackAction,
-                rotationDownAction,
-                delayAction,
-                hideAction
-            ));
+            self.stopAllActions();
+            self.runAction(self._hitAction);
         }
     });
 })(window.myGame);
