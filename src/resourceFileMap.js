@@ -1,16 +1,19 @@
 (function (namespace) {
     namespace.resourceFileMap = {
         background_png: 'res/background.png',
-        fog_png: 'res/fog.png',
+        flowers_png: 'res/flowers.png',
         hammer_png: 'res/hammer.png',
-        heartLeft_png: 'res/heartLeft.png',
-        heartRight_png: 'res/heartRight.png',
-        holeFront_png: 'res/holeFront.png',
-        lover_png: 'res/lover.png',
-        loverSay_png: 'res/loverSay.png',
-        peng_png: 'res/peng.png',
-        plus_png: 'res/plus.png',
-        uncle_png: 'res/uncle.png',
-        uncleSay_png: 'res/uncleSay.png'
+
+        fog_png: 'res/hole/fog.png',
+        heartLeft_png: 'res/hole/heartLeft.png',
+        heartRight_png: 'res/hole/heartRight.png',
+        hitEffect_png: 'res/hole/hitEffect.png',
+        hole_png: 'res/hole/hole.png',
+        lover_png: 'res/hole/lover.png',
+        loverSay_png: 'res/hole/loverSay.png',
+        mask_png: 'res/hole/mask.png',
+        plus_png: 'res/hole/plus.png',
+        uncle_png: 'res/hole/uncle.png',
+        uncleSay_png: 'res/hole/uncleSay.png'
     }
 })(window.myGame);
