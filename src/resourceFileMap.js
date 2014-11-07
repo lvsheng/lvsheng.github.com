@@ -5,7 +5,6 @@
         startHover_png: 'res/startHover.png',
 
         background_png: 'res/background.png',
-        flowers_png: 'res/flowers.png',
         hammer_png: 'res/hammer.png',
 
         fog_png: 'res/hole/fog.png',

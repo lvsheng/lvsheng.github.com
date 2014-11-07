@@ -2,6 +2,7 @@
  * @dependence namespace.resourceFileMap
  * @dependence namespace.Hole
  * @dependence namespace.Hammer
+ * @dependence namespace.endGame
  */
 (function (namespace) {
     namespace.GameLayer = cc.Layer.extend({
@@ -46,7 +47,7 @@
 
         _initView: function () {
             var self = this;
-            var HOLE_POSITIONS = [ //TODO: 改为真正对应图中的点
+            var HOLE_POSITIONS = [
                 //顺序为渲染的顺序，会影响到覆盖，所以应该让下面的hole排在前（下面的心等会覆盖上面的洞口）
                 //第一排
                 cc.p(110, 585),
@@ -127,7 +128,7 @@
                 } else { //游戏结束
                     self.unschedule(updatePopMouseInterval);
                     self.unschedule(self._popMouseProxy);
-                    //TODO: 调结束场景？
+                    namespace.endGame();
                 }
 
                 ++self._popMouseIntervalIndex;
