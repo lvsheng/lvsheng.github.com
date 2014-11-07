@@ -73,16 +73,6 @@
                 self.addChild(createdHole);
             }
 
-            //因为洞里的动画不会在花的位置出现，所以就这样让花盖在洞的前面就可以
-            var flowersSprite = new cc.Sprite(namespace.resourceFileMap.flowers_png);
-            flowersSprite.attr({
-                anchorX: 0,
-                anchorY: 0,
-                x: 0,
-                y: 0
-            });
-            self.addChild(flowersSprite);
-
             self._hammer = new namespace.Hammer();
             self.addChild(self._hammer);
         },
