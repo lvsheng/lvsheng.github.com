@@ -91,14 +91,45 @@
         //由hammer执行完挥锤子动画后调用
         afterHitPoppedMouse: function () {
             var self = this;
-            self._poppedMouse.runAction(new cc.Sequence(
-                self._mousePullAction,
-                new cc.CallFunc(function () {
-                    namespace.scoreManager.hitOneSuccessful();
-                    //TODO: 先飘心啊之类的
-                    self._status = self._STATUS.idle;
-                })
-            ));
+            if (self._poppedMouse === self._uncle) {
+                self._poppedMouse.runAction(new cc.Sequence(
+                    new cc.Spawn(
+                        self._mousePullAction,
+                        new cc.CallFunc(function () {
+                            self._fog.attr({
+                                visible: true,
+                                scale: .7
+                            });
+                            self._fog.runAction(new cc.Sequence(
+                                new cc.Spawn(
+                                    new cc.ScaleTo(0.05, 1),
+                                    new cc.FadeIn(0.05)
+                                )
+                            ));
+                        })
+                    ),
+                    new cc.CallFunc(function () {
+                        namespace.scoreManager.hitOneSuccessful();
+                        self._fog.runAction(
+                            new cc.FadeOut(0.2)
+                        );
+                        self._plusOne.attr({
+                            visible: true,
+                            opacity: 0
+                        });
+                        self._plusOne.runAction(new cc.Spawn(
+                            new cc.Sequence(
+                                new cc.FadeIn(0.02),
+                                new cc.FadeOut(0.8)
+                            ),
+                            new cc.MoveBy(0.82, 20, 60)
+                        ));
+                        self._status = self._STATUS.idle;
+                    })
+                ));
+            } else {
+
+            }
         },
 
         setUncleAutoPullTime: function (newTime) {
