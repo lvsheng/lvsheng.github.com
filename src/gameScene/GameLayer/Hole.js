@@ -11,8 +11,7 @@
             animating: 'animating'
         },
 
-//        _POP_LOVER_PROBABILITY: 0.2,
-        _POP_LOVER_PROBABILITY: 1,
+        _POP_LOVER_PROBABILITY: 0.2,
 
         ctor: function () {
             var self = this;
@@ -139,6 +138,9 @@
                 self._poppedMouse.runAction(new cc.Sequence(
                     self._mousePullAction,
                     new cc.CallFunc(function () {
+                        self._status = self._STATUS.idle;
+                    }),
+                    new cc.CallFunc(function () {
                         var heartNames = ['leftHeart', 'rightHeart'];
                         var animateTime = .3;
                         var rotateTo;
@@ -147,11 +149,17 @@
                             var currentHeart = self['_' + currentHeartName];
                             rotateTo = currentHeartName === 'leftHeart' ? -70 : 70;
 
+                            var animateInTimeRate = 0.2;
+                            var animateInTime = animateTime * animateInTimeRate;
+                            var animateOutTime = animateTime * (1 - animateInTimeRate);
                             currentHeart.attr(self._initialAttr[currentHeartName]);
                             currentHeart.setVisible(true);
-                            currentHeart.runAction(new cc.Spawn(
-                                new cc.EaseIn(new cc.RotateTo(animateTime, rotateTo), .4),
-                                new cc.FadeOut(animateTime)
+                            currentHeart.runAction(new cc.Sequence(
+                                new cc.FadeIn(animateInTime),
+                                new cc.Spawn(
+                                    new cc.EaseIn(new cc.RotateTo(animateOutTime, rotateTo), 0.4),
+                                    new cc.FadeOut(animateOutTime)
+                                )
                             ));
                         }
                     })
@@ -204,7 +212,9 @@
                 x: anchorX - 2,
                 y: heartY,
                 zIndex: zIndexConf.effectProp,
-                visible: false
+                visible: false,
+                opacity: 255,
+                rotation: 0
             };
             leftHeart.attr(self._initialAttr.leftHeart);
             self.addChild(leftHeart);
@@ -217,7 +227,9 @@
                 x: anchorX + 2,
                 y: heartY,
                 zIndex: zIndexConf.effectProp,
-                visible: false
+                visible: false,
+                opacity: 255,
+                rotation: 0
             };
             rightHeart.attr(self._initialAttr.rightHeart);
             self.addChild(rightHeart);
