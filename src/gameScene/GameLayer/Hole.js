@@ -11,7 +11,8 @@
             animating: 'animating'
         },
 
-        _POP_LOVER_PROBABILITY: 0.2,
+//        _POP_LOVER_PROBABILITY: 0.2,
+        _POP_LOVER_PROBABILITY: 1,
 
         ctor: function () {
             var self = this;
@@ -40,6 +41,8 @@
             self._initialAttr = {
                 hidingMouseY: null,
                 fog: null,
+                leftHeart: null,
+                rightHeart: null,
                 plusOne: null
             };
             self._hidingMouseY = null;
@@ -133,7 +136,26 @@
                     })
                 ));
             } else {
+                self._poppedMouse.runAction(new cc.Sequence(
+                    self._mousePullAction,
+                    new cc.CallFunc(function () {
+                        var heartNames = ['leftHeart', 'rightHeart'];
+                        var animateTime = .3;
+                        var rotateTo;
+                        for (var i = 0; i < heartNames.length; ++i) {
+                            var currentHeartName = heartNames[i];
+                            var currentHeart = self['_' + currentHeartName];
+                            rotateTo = currentHeartName === 'leftHeart' ? -70 : 70;
 
+                            currentHeart.attr(self._initialAttr[currentHeartName]);
+                            currentHeart.setVisible(true);
+                            currentHeart.runAction(new cc.Spawn(
+                                new cc.EaseIn(new cc.RotateTo(animateTime, rotateTo), .4),
+                                new cc.FadeOut(animateTime)
+                            ));
+                        }
+                    })
+                ));
             }
         },
 
@@ -175,23 +197,29 @@
             self._lover = lover;
 
             var leftHeart = new cc.Sprite(resourceFileMap.heartLeft_png);
-            var heartY = anchorY + leftHeart.height / 2 + 50;
-            leftHeart.attr({
-                x: anchorX - leftHeart.width / 2 - 2,
+            var heartY = anchorY + leftHeart.height / 2 + 30;
+            self._initialAttr.leftHeart = {
+                anchorX: 1,
+                anchorY: 0,
+                x: anchorX - 2,
                 y: heartY,
                 zIndex: zIndexConf.effectProp,
                 visible: false
-            });
+            };
+            leftHeart.attr(self._initialAttr.leftHeart);
             self.addChild(leftHeart);
             self._leftHeart = leftHeart;
 
             var rightHeart = new cc.Sprite(resourceFileMap.heartRight_png);
-            rightHeart.attr({
-                x: anchorX + rightHeart.width / 2 + 2,
+            self._initialAttr.rightHeart = {
+                anchorX: 0,
+                anchorY: 0,
+                x: anchorX + 2,
                 y: heartY,
                 zIndex: zIndexConf.effectProp,
                 visible: false
-            });
+            };
+            rightHeart.attr(self._initialAttr.rightHeart);
             self.addChild(rightHeart);
             self._rightHeart = rightHeart;
 
