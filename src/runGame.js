@@ -8,7 +8,7 @@
         cc.view.resizeWithBrowserSize(true);
 
         cc.LoaderScene.preload(namespace.resourceFileList, function () {
-            cc.director.runScene(new namespace.GameScene());
+            cc.director.runScene(new namespace.HomeScene());
         }, this);
     };
     cc.game.run("gameCanvas");

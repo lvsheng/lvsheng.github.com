@@ -1,5 +1,9 @@
 (function (namespace) {
     namespace.resourceFileMap = {
+        home_png: 'res/home.png',
+        start_png: 'res/start.png',
+        startHover_png: 'res/startHover.png',
+
         background_png: 'res/background.png',
         flowers_png: 'res/flowers.png',
         hammer_png: 'res/hammer.png',
