@@ -39,23 +39,23 @@
             self.addChild(coverHammerChild);
 
             self.setVisible(false);
+
+            //TODO: for debug:
+            window.hammer = self;
+            window.hitting = self._hittingEffect;
         },
         hit: function (hammerHeadX, hammerHeadY, hittedMouse) {
             var self = this;
 
+            var anchorX = .7;
+            var anchorY = .3;
             self.attr({
-                anchorX: .7,
-                anchorY: .3,
+                anchorX: anchorX,
+                anchorY: anchorY,
                 rotation: 0,
-                visible: true
-            });
-
-            var x = hammerHeadX + (self.width * self.anchorX) - 35;
-            var y = hammerHeadY + (self.height * self.anchorY);
-
-            self.attr({
-                x: x,
-                y: y
+                visible: true,
+                x: hammerHeadX + (self.width * anchorX) - 35,
+                y: hammerHeadY + (self.height * anchorY)
             });
 
             self.stopAllActions();
@@ -64,22 +64,21 @@
             var rotationDownAction = new cc.RotateTo(.03, -60);
             var delayAction = new cc.DelayTime(.02);
             var hideAction = new cc.Hide();
-            var showHittingEffectAction = new cc.CallFunc(function () {
-                self._hittingEffect.setVisible(true);
-            });
-            var hideHittingEffectAction = new cc.CallFunc(function () {
-                self._hittingEffect.setVisible(false);
-            });
             if (hittedMouse) {
                 self.runAction(new cc.Sequence(
                     rotationBackAction,
                     rotationDownAction,
-                    showHittingEffectAction,
-                    delayAction,
-                    hideHittingEffectAction,
-                    hideAction,
                     new cc.CallFunc(function () {
-                        hittedMouse.afterHitPoppedMouse();
+                        self._hittingEffect.setVisible(true);
+                        self._hittingEffect.setOpacity(255);
+                        self._hittingEffect.runAction(new cc.Sequence(
+                            new cc.ScaleTo(0.02, 1.5),
+                            new cc.FadeOut(0.02),
+                            new cc.CallFunc(function () {
+                                self.runAction(hideAction);
+                                hittedMouse.afterHitPoppedMouse();
+                            })
+                        ))
                     })
                 ));
             } else {
