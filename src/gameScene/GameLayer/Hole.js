@@ -289,8 +289,8 @@
             mouseMask.attr({
                 anchorX: 0.5,
                 anchorY: 1,
-                x: anchorX,
-                y: anchorY + 35,
+                x: anchorX + 5,
+                y: anchorY + 37,
                 zIndex: zIndexConf.holeMask
             });
             self.addChild(mouseMask);
