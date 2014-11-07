@@ -37,6 +37,11 @@
             self._uncleAutoPullTime = 3;
             self._loverAutoPullTime = 2;
 
+            self._initialAttr = {
+                hidingMouseY: null,
+                fog: null,
+                plusOne: null
+            };
             self._hidingMouseY = null;
 
             self.init();
@@ -79,6 +84,10 @@
             self._status = self._STATUS.mouseOn;
             poppedMouse.runAction(self._mousePopOnAction);
 
+            //防止冒出新鼠时与雾重叠
+            self._fog.stopAllActions();
+            self._fog.setVisible(false);
+
             var autoPullTime = (poppedMouse === self._lover ? self._loverAutoPullTime : self._uncleAutoPullTime);
             self.scheduleOnce(self._autoPullPoppedMouseProxy, autoPullTime);
         },
@@ -96,10 +105,8 @@
                     new cc.Spawn(
                         self._mousePullAction,
                         new cc.CallFunc(function () {
-                            self._fog.attr({
-                                visible: true,
-                                scale: .7
-                            });
+                            self._fog.attr(self._initialAttr.fog);
+                            self._fog.setVisible(true);
                             self._fog.runAction(new cc.Sequence(
                                 new cc.Spawn(
                                     new cc.ScaleTo(0.05, 1),
@@ -113,10 +120,8 @@
                         self._fog.runAction(
                             new cc.FadeOut(0.2)
                         );
-                        self._plusOne.attr({
-                            visible: true,
-                            opacity: 0
-                        });
+                        self._plusOne.attr(self._initialAttr.plusOne);
+                        self._plusOne.setVisible(true);
                         self._plusOne.runAction(new cc.Spawn(
                             new cc.Sequence(
                                 new cc.FadeIn(0.02),
@@ -151,7 +156,7 @@
 
             var uncle = new cc.Sprite(resourceFileMap.uncle_png);
             var hidingMouseY = anchorY - (uncle.height / 2) - 5;
-            self._hidingMouseY = hidingMouseY;
+            self._initialAttr.hidingMouseY = hidingMouseY;
             uncle.attr({
                 x: anchorX,
                 y: hidingMouseY,
@@ -192,12 +197,14 @@
 
             var plusOne = new cc.Sprite(resourceFileMap.plus_png);
             var plusOneY = anchorY + plusOne.height / 2 + 70;
-            plusOne.attr({
+            self._initialAttr.plusOne = {
                 x: anchorX,
                 y: plusOneY,
                 zIndex: zIndexConf.effectProp,
-                visible: false
-            });
+                visible: false,
+                opacity: 0
+            };
+            plusOne.attr(self._initialAttr.plusOne);
             self.addChild(plusOne);
             self._plusOne = plusOne;
 
@@ -206,7 +213,8 @@
                 x: anchorX,
                 y: anchorY + 13,
                 zIndex: zIndexConf.effectProp,
-                visible: false
+                visible: false,
+                scale: .7
             });
             self.addChild(fog);
             self._fog = fog;
@@ -254,7 +262,7 @@
 
             var holeAnchorY = self.height / 2;
             var mousePopOnMoveAction = new cc.MoveTo(0.1, self._uncle.x, holeAnchorY + self._uncle.height / 2);
-            var mousePullMoveAction = new cc.MoveTo(0.06, self._uncle.x, self._hidingMouseY);
+            var mousePullMoveAction = new cc.MoveTo(0.06, self._uncle.x, self._initialAttr.hidingMouseY);
             self._mousePopOnAction = new cc.EaseIn(mousePopOnMoveAction, .8);
             self._mousePullAction = new cc.EaseIn(mousePullMoveAction, .8);
         },
