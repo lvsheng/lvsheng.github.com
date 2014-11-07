@@ -263,8 +263,49 @@
             var holeAnchorY = self.height / 2;
             var mousePopOnMoveAction = new cc.MoveTo(0.1, self._uncle.x, holeAnchorY + self._uncle.height / 2);
             var mousePullMoveAction = new cc.MoveTo(0.06, self._uncle.x, self._initialAttr.hidingMouseY);
-            self._mousePopOnAction = new cc.EaseIn(mousePopOnMoveAction, .8);
-            self._mousePullAction = new cc.EaseIn(mousePullMoveAction, .8);
+
+            self._mousePopOnAction = new cc.Sequence(
+                new cc.EaseIn(mousePopOnMoveAction, .8),
+                new cc.CallFunc(function () {
+                    var animating = .5;
+                    var initialRotation;
+                    var saying;
+                    if (self._poppedMouse === self._uncle) {
+                        initialRotation = -80;
+                        saying = self._uncleSay;
+                    } else {
+                        initialRotation = 80;
+                        saying = self._loverSay;
+                    }
+
+                    saying.attr({
+                        visible: true,
+                        opacity: 0,
+                        rotation: -80
+                    });
+                    saying.runAction(new cc.Spawn(
+                        new cc.FadeIn(animating),
+                        new cc.EaseElasticOut(new cc.RotateTo(animating, 0), .4)
+                    ));
+                })
+            );
+            self._mousePullAction = new cc.Sequence(
+                new cc.EaseIn(mousePullMoveAction, .8),
+                new cc.CallFunc(function () {
+                    var animatingTime = .1;
+                    var saying;
+                    if (self._poppedMouse === self._uncle) {
+                        saying = self._uncleSay;
+                    } else {
+                        saying = self._loverSay;
+                    }
+
+                    saying.runAction(new cc.Spawn(
+                        new cc.FadeOut(animatingTime),
+                        new cc.EaseBackIn(new cc.RotateTo(animatingTime, -40), .4)
+                    ));
+                })
+            );
         },
 
         _autoPullPoppedMouseProxy: function () {
