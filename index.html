@@ -10,15 +10,21 @@
 
     <style>
         html, body {
-            background-color: #DAECF9;
-            /*background-image: url('res/background.png');*/
-            /*background-position: center;*/
-            /*background-size: cover;*/
+            background-color: black;
+            height: 100%;
+        }
+        #Cocos2dGameContainer {
+            height: 100% !important;
+            margin-bottom: 0 !important;
+            margin-top: 0 !important;
+            position: absolute !important;
+            bottom: 0;
+            background: #DAECF9;
         }
         #gameCanvas {
             background: transparent !important;
-            position: absolute !important;
-            margin-bottom: 0 !important;
+            bottom: 0;
+            position: absolute;
         }
     </style>
     <script type="text/javascript" src="cocos2d-js-v3.1-lite.js" charset="UTF-8"></script>
